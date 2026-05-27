@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Help Desk Ticketing System</title>
+</head>
+<body>
+    <h1>Submit Help Desk Ticket</h1>
+    <form action="/submit" method="POST">
+
+	<label>Your Name:</label><br>
+	<input type="text" name="name" required><br><br>
+	
+	<label>Describe your issues:</label><br>
+	<textarea name="issue" rows="5" cols="50" required></textarea><br><br>
+
+	<label>Category:</label><br>
+	<select name="category">
+	    <option value="hardware">Hardware</optuon>
+	    <option value="softwate">Software</option>
+	    <option value="network">Network</option>
+	    <option value="account">Account / Access</option>
+	    <option value="other">Other</option>
+	</select><br><br>
+	
+	<button type="submit">Submit Ticket</button>
+    </form>
+</body>
+</html>
