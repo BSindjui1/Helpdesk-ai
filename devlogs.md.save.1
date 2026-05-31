@@ -1,0 +1,82 @@
+In the last 24 hours, I made a helpdesk-ai folder. Within that folder i made two folders named templates and static.
+I then used "touch app.py requirements.txt README.md", it seems to be a simplier way of creating these files. When
+creating those files indiviually in the cmd line i run into errors repeatedly. so now i have app.py the core of my app a templates folder which my flask wi>
+## 2025-05-26
+-Basically restarted the whole process
+-updated my pi using "sudo apt update && sudo apt upgrade -y"
+-Checked for python, pip3, and added venv support "sudo apt install python3-venv -y"
+Currently the model looks like this
+
+helpdesk-ai/
+-app.py
+-templates/
+-README.md
+-devlogs.md
+-Static/
+-requirements.txt
+
+I then setup my virtual environmet and then install flask and use "pip freeze>pip freeze > requirements.txt",
+which creates a list of all the python packages installed in my environment. I tried running pip install flask
+without activating venv("source venv/bin/activate"), and that resulted in there being an error due to the
+environment being managed externally, which means I didn't have the right packages avaliable, when i run it in the venv
+it puts all the dependecies and settings.
+
+1.What is a package manager and why does Linux use one?
+-A package manager on linux helps you install, update, and manage software pacLinux uses a package manager to keep 
+everything organized and to ensure that software is easy to install and update. 
+2.Why do we separate templates/ and static/ folders?
+-Templates is where the main content is. Flask uses Templates to render the HTMl pages. Static folder is for things 
+like CSS,JavaScript, images, fonts, etc. Keeping these folders seperate helps flask processes them efficiently.
+3.What would happen if two projects on the same machine used different versions of Flask without virtual environments?
+-If two projects on the same machine try to use a different versions of flask with venv, it would cause complications in errors. 
+The systems venv can only hold 1 version of a package at a time. So trying to run both without a venv could result in one breaking.
+4.What does pip freeze actually do? Where does it get that information from?
+-Pip freeze generates a list of all the installed packages and their versions.
+
+I now wrote the code for nano app.py and index.html within the templates folder, and then ran the app. I was able too pull
+up the app when i typed my pi's public ip, but i believe the static ip isn't working. and when i type in a ticket im able to see it.
+within the cmd line. While trying to break it and see how some of the individual layers run. I got this error that would say "Method Not Allowed" When
+I Would submit a ticket. I thought it pointed to the route in the app.py file, but it was because of a single character within the index.html file
+<form action="/submit" method-"POST"> this was the wrong one <form action="/submit" method="POST"> thats the correct one it was that single -Dash
+When I change the request.form.get("name") to ("username") In the terminal it now displays "none" for its name. When i change the name of the templates
+folder I get a message that says jinja2.exceptions.TemplateNotFound. Which just means it can't find the templates folder so it doesn't have a format. Lastly I made a added writing to the readme just what i had done up until now and git add .
+git commit -m "Step 2: Working ticket submission form".
+
+1.What is a POST request vs a GET request? When would you use each?
+-A post Request is used to send data a server, in my case when i create a new ticket that information is sent to a server using the POST request"app.route('/submit', methods=['POST'])",
+A GET request is used to retrieve data from a server, So when i want to read the tickets that were sent to the server."request.form.get('name')"
+2.Why does host="0.0.0.0" let other devices connect, but host="127.0.0.1" wouldn't?
+-making the host"0.0.0.0 allows it so all ip's can access it if I had the host 127.0.0.1 it would only my pi to access
+3.What does debug=True do? Why would you NEVER use it in production?
+- In Flask debug=True is a setting thats when enabled, will give you detailed error pages when somethings goes wrong, aswell as automatically reloads the application when you updated the code. However you don't wanna use in production because it can expose sensitive information and make the application less secure.
+4.What does the name attribute on an HTML input do? What happens if you remove it?
+-in HTML, the name attribute on an input element is used to identify that input when the form is submitted, if you remove the name attribute, that input's data won't be included in the form.
+5.Right now tickets disappear when you restart the app. Why? What would fix that?
+-The Reasons tickets disappear when I restart the app is because theyre being stored in the memory. When the app restarts that in memory data is lost, Switching to a database like sql would fix this.
+
+## 2025-05-28
+Didn't document for yesterday so will do that here yesterday i realized i didn't take many screenshots, so i dedicated yesterday to screenshotting all the key moment from yesterday.>
+Today
+-Today I was working on setting up the database in SQLALCEMY
+-I had to activate my virtual enivornemnt to download flask-sqlalcemy, then used the pip freeze command to send it to requirements
+-Then went to reqrite app.py to tell flask where to create the database file, write the database code in python, and create the new ticket object and save it to the database
+- had to fix two erros in the app.py code when i was defining my database i misspelled datetime."utcnow" and "datetime"
+1.Change nullable=False to nullable=True on the name field. What do you think that changes? What would happen if someone submitted a ticket with no name?
+-I believe this would allow the value of the name to be null in the case that nothing was entered, I didn't see a visable difference because i believe my html document uses required attributes, preventing me from submitting without giving a new.
+2.After submitting 3 tickets, stop and restart the app. Submit 1 more. What ticket ID does it get? Why does it continue from where it left off instead of starting at 1 again?
+-I get ticket 4, It continues from where it left off since the database isn't on python code or ram, the data isn't erased.Since the database is on SQLite database file it's stored on disk.
+3.Delete the instance/tickets.db file with rm instance/tickets.db. Restart the app. What happens to your old tickets? What does this tell you about backups?
+-When I delete instance/tickets.db, all of my old tickets disappear because the entire SQLite database is stored inside that single file. This shows that the database file is the only place the data lives, and if it is deleted or lost, all ticket history is gone. It also demonstrates why backups are important without at least one backup of the .db file, all data would be permanently lost.
+4.What an ORM is in your own words
+- An ORM(OBJECT Relational Mapper) Is a software that allows you to use objects and code instead of writing raw SQL, This one SQLAlchemy allows you to write python and  it translates it into sql.
+5.What db.session.commit() does and why you think it's needed
+db.session.commit saves the changes permanently into the datbase file, when you do a db.session.add the ticket is just queued in memory. So just like in github
+6.What is a primary key and why does every table need one?
+A primary key is a name in a database that identifies a row, they can't have the same now because if two rows have the same name the database wouldn't know which one you meant.
+7.What does nullable=False mean and why would you use it?
+Nullable=false prevents the value from being nothing or null, forcing you to enter a value.
+8.Right now if someone submits a ticket with no name, what happens? (Try it)
+ I am prompted to fill out a name.
+9.The database file is in an instance/ folder. Why do you think Flask puts it there instead of the root folder?
+Flask stores the database file in the instance/ folder because that folder is meant for data that changes and should not be part of the main codebase. 
+

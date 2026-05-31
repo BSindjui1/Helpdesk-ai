@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Tickets</title>
+</head>
+<body>
+    <h1>Help Desk Tickets</h1>
+    <a href="/">Submit New Ticket</a>
+    <hr>
+
+    {% if tickets %}
+        <table border="1" cellpadding="8">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Issue</th>
+                <th>Status</th>
+                <th>Submitted</th>
+            </tr>
+            {% for ticket in tickets %}
+            <tr>
+                <td>{{ ticket.id }}</td>
+                <td>{{ ticket.username }}</td>
+                <td>{{ ticket.category }}</td>
+                <td>{{ ticket.issue }}</td>
+                <td>{{ ticket.status }}</td>
+                <td>{{ ticket.submitted_at.strftime('%Y-%m-%d %H:%M') }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No tickets yet.</p>
+    {% endif %}
+</body>
+</html>

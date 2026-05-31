@@ -159,43 +159,5 @@ My virtual environment is isolated — it only exists inside my project folder.
 Every time I open a new terminal, I must activate the venv again before running the app.
 If I don’t, Python will default to the global environment and none of my project packages will be available.
 
-## 2025-05-30
 
-When I changed {{ ticket.name }} to {{ ticket.username }}, Flask displayed a blank value. This is because the Ticket model only has a field called name, not username. Since username doesn’t exist on the Ticket object, Jinja renders it as an empty value. The page still loads, but the name column appears blank.
-
-1. What is Jinja2 and what problem does it solve?
-Jinja2 is a tool that lets Python and HTML work together.
-HTML by itself can’t change — it’s just a static page.
-Python can change things — it can hold data, make decisions, and update values.
-
-Jinja2 connects the two by letting you insert Python values directly into HTML using tags like {{ }} and {% %}.
-This solves the problem of having to manually write out every piece of content. Instead, the page updates automatically based on the data your Python code sends.
-
-2. What does “descending” mean in a query? What is the opposite?
-When something is sorted descending, it means it goes from largest to smallest or newest to oldest.
-The opposite is ascending, which goes from smallest to largest or oldest to newest.
-
-So if tickets are sorted in descending order by time, the most recent ticket shows up first.
-
-3. If you have 10,000 tickets, is -all a good idea? What should you do instead?
-Showing all 10,000 tickets at once is slow and overwhelming.
-It would take a long time to load and would be hard for a user to scroll through.
-
-A better solution is pagination — showing a limited number of tickets per page (like 20 or 50 at a time).
-This keeps the site fast and makes it easier to navigate.
-
-4. Anyone can see /tickets right now. Is that a problem? How would you fix it?
-Yes, it’s a problem because tickets can contain private or sensitive information.
-Right now, anyone who knows the URL can view everything.
-
-To fix this, you would add authentication so only authorized users (like admins or support staff) can access the page.
-This usually means adding a login system and protecting the route so only logged‑in users can view it.
-
-5. What is the difference between your Python Ticket class and the actual database table? Are they the same?
-They are related, but not the same.
-
-The Python Ticket class is the blueprint — it describes what fields a ticket should have.
-
-The database table is the actual storage — it holds the real ticket data.
-
-The class tells the database how to structure the table, but the table is where the real information lives.
+When I remove the {% if tickets %} block and keep only the table, the page still loads normally. If there are no tickets, the table appears but contains no rows. The loop simply runs zero times, so the table is empty instead of showing the “No tickets yet” message.
