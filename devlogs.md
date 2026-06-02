@@ -270,3 +270,33 @@ This is the core feature of the whole project working end to end.
 I then edited tickets.html in templates to add The ai columns and tables for the loop. 
 -When you submit a vague ticket like it's broken the category is made other, priority low, and say that more information needs to be provided.
 -When i submit a ticket in all caps ai handles it just fine
+1. What is a try‑except block and why did you wrap the API call in one?
+A try‑except block basically means:
+“Try to run this code, and if something goes wrong, run this other code instead.”
+So for the API call, I wrapped it in try‑except because if the API fails — like bad key, rate limit,
+network issue — the app won’t crash. Instead, it’ll catch the error and handle it cleanly.
+2. What would happen if the AI didn’t follow the exact format? How could you make parsing more robust?
+If the AI doesn’t follow the exact format I asked for, my parsing could break.
+Earlier, when I removed the formatting and changed the token count, the AI gave a more dense, detailed explanation because it had more room to talk.
+To make parsing more robust, I’d format things more clearly or write code that can handle
+small mistakes — basically make it less strict so it doesn’t break if the AI responds slightly differently.
+3. Why did you have to delete the database when adding new columns?
+I deleted the database because the old data didn’t match the new structure.
+The new columns wouldn’t update correctly with the old data still in there, 
+so wiping it was the easiest way to reset everything and make sure the API and the app were reading the updated structure.
+4. What is data migration and why use it in production instead of deleting data?
+Data migration is basically moving data from one structure to another — like updating the format without losing anything.
+In production, you wouldn’t delete the whole database because you’d lose real user data.
+Instead, you’d run a migration so the data gets updated to the new structure safely.
+5. Right now every ticket submission makes an API call. What could go wrong at scale?
+If every submission hits the API, things could go wrong fast:
+
+You could hit rate limits
+
+It could get slow
+
+It could get expensive
+
+Errors could stack up if too many people submit at once
+
+Basically, it doesn’t scale well unless you add caching, batching, or some kind of queue.

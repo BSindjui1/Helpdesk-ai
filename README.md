@@ -1,7 +1,8 @@
 # AI Help Desk Ticketing Assistant
 
 A web-based ticketing system built with Python and Flask, running on a Raspberry Pi.
-Users can submit IT support tickets which are categorized and (soon) triaged by AI.
+Users can submit IT support tickets which are automatically triaged by AI — 
+categorized, prioritized, and given a suggested fix using the Claude API.
 
 ## How to Run
 1. Activate virtual environment: source venv/bin/activate
@@ -46,3 +47,9 @@ Confirmed that the table dynamically updates and sorts tickets by submission tim
  I used SQLAlchemy ORM to interact with a SQLite database
  I built a data display page that queries and renders live database records
  I understand the difference between in-memory storage and persistent disk storage
+
+I integrated an external AI API into a web application
+ I used environment variables to manage API secrets securely
+ I wrote a prompt engineering solution to extract structured data from an AI response
+ I handled API failures gracefully with try/except error handling
+ I understand what an API call is and how authentication works
