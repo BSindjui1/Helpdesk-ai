@@ -220,50 +220,60 @@ An API key is meant for an application, it's credentials to whatever software th
 When we use export in bash were'e making the variable available to any programs or scrips we run in the terminal session.
 If a teamate wanted to run the app and get the api ket, they'd would just need to set up the same environment variable on their machine and .bashrc.
 
-## 2026-06-01
+## 2025-06-1
+1. API key vs password
+A password is for you to log into a website an api key is for your app to log into a service
+Same idea, different audience — humans vs. software.
 
-So far today i've created a test script to test the api, I had to buy some tokens, After I wrote seperate code for the test script i, I ran the script and once i seen it worked we went to editing the app.py script to call to the api.
-When i tried to run the code i had some spelling error's probably due to typing fast, maybe I should slow down when writing code, I also ran into another
- error, the error was because i was using both indents and spaces, python treats them completely different since it uses indentation to define blocks 
-I should always use 4 spaces never tab, Lastly there was an error because I had Taken out app.route(tickets) out my page.
-			
-       
-### Bug Fix: /tickets page showing "Not Found" (again)
+2. What an environment variable is
+It’s a secret your computer holds for you outside your code.
+Your app can read it, but it never gets saved in your files.
 
-**What happened:**
-After getting AI triage working, clicked "View all tickets" and got a 404 again.
+3. Why this is safer
+If you hard code a key in your Python file, you might accidentally push it to GitHub.
+Env vars keep your secrets off the repo and on your machine only.
 
-**How I diagnosed it:**
-Ran cat app.py | grep "tickets" which showed only two lines — the database 
-config and the HTML link. The actual route was nowhere in the file.
+4. What export does
+export tells the terminal, to make this variable available to any program I run
+Without it, Python can’t see your API key.
 
-**Root cause:**
-When I rewrote app.py to fix the TabError, I accidentally left out the 
-/tickets route entirely. The link existed in the HTML but Flask had nothing 
-to handle it.
+5. Why the fake key didn’t break anything at first
+My Flask route wasn’t actually calling the API yet.
+The key only matters when a real request is sent.
 
-**Fix:**
-Added the missing route back above the if __name__ == "__main__": line:
+6. How I know I am calling the API
+This line sends a real request:
 
-@app.route("/tickets")
-def view_tickets():
-    all_tickets = Ticket.query.order_by(Ticket.submitted_at.desc()).all()
-    return render_template("tickets.html", tickets=all_tickets)
+python
+client.messages.create(...)
+That’s when the model runs, the key is checked, and I get billed.
 
-**What I learned:**
-When you rewrite a file to fix one bug, you can accidentally delete working 
-code in the process. The grep command (grep "tickets") is a fast way to 
-search a file without reading the whole thing. In the future, before 
-rewriting a file, check what's already working in it first.
+7. What max_tokens does
+It controls how long the model’s answer can be.
+Small number = short reply.
+Big number = longer reply.
 
-**Phase 3 milestone:**
-AI triage is fully working. Submitted a ticket about a phone not connecting 
-to internet, got back:
-- Category: Network
-- Priority: High  
-- Suggested Fix: Restart WiFi, check airplane mode, verify correct network
+8. Why I used Haiku
+Haiku is cheap, fast, and perfect for simple tasks.
+Using a huge model would cost more for no real benefit here.
 
-This is the core feature of the whole project working end to end.
+Bonus: How teammates get the key
+They make their own API key and set it in their environment.
+My code never stores the key — it just reads the variable name.
 
-**Time spent: 20 minutes**
+Prompt engineering is:
 
+testing different instructions
+
+refining wording
+
+controlling tone, structure, and behavior
+
+using patterns that produce reliable outputs
+
+And you’re right:
+You tested prompts in a separate file to confirm the API works before integrating it.  
+That’s exactly what real engineers do.
+
+
+## Im going
