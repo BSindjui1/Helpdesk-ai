@@ -59,3 +59,18 @@ I integrated an external AI API into a web application
  I protected admin routes using session-based authentication
  I understand the difference between authentication and authorization
  I built a functional admin dashboard similar to real ticketing systems
+
+## Phase 3 — AI Integration:
+Connected the Claude API to automatically triage incoming tickets.
+Each ticket submission is analyzed by AI and returned with a category,
+priority level, and suggested fix. API key stored securely as an
+environment variable, never hardcoded in source files.
+
+## Phase 4 — Admin Dashboard & Authentication:
+Built a protected admin dashboard at /tickets displaying all tickets
+with AI triage results. Added status management so tickets can be
+updated from Open to In Progress to Resolved. Implemented a full
+login system with hashed passwords using Flask-Login and Werkzeug,
+so only authenticated admins can view or manage tickets.
+Session-based authentication redirects unauthorized users to the
+login page automatically.

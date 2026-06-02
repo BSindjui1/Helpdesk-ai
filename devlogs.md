@@ -347,5 +347,7 @@ allowed to do.
 4.The default password is admin123 hardcoded. Why is that a problem in production?
 Default password: Using something like "admin123" is a problem because it’s easy to guess.
 5.What does @login_required actually do under the hood when you try to access a protected page?
-@login_required: it’s just a way to make sure you have to log in before you can access certain pages.
-
+ when you hit a protected route without being logged in, Flask-Login intercepts the request, stores 
+where you were trying to go, redirects you to the login page, and then after you log in successfully
+it sends you back to where you originally wanted to go. That redirect behavior is what login_manager.login_view = 
+"login" controls in your app. 
