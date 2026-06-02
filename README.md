@@ -53,3 +53,9 @@ I integrated an external AI API into a web application
  I wrote a prompt engineering solution to extract structured data from an AI response
  I handled API failures gracefully with try/except error handling
  I understand what an API call is and how authentication works
+
+ I implemented user authentication with hashed passwords from scratch
+ I built CRUD operations against a live database
+ I protected admin routes using session-based authentication
+ I understand the difference between authentication and authorization
+ I built a functional admin dashboard similar to real ticketing systems

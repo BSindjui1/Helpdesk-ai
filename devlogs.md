@@ -300,3 +300,52 @@ It could get expensive
 Errors could stack up if too many people submit at once
 
 Basically, it doesn’t scale well unless you add caching, batching, or some kind of queue.
+
+## 2026-06-02
+
+Today So far I've been working on adding a CRUD Operation System.(Create, Read,Update,Delete) Which is the principle for most data driven apps
+Firstly i updated app.py to add another app.route for updating and resolving the tickets,
+I then rewrite the whole tickets.html in the templates folder so that it adds a status dropdown and a update botton for each ticket
+I then went to go tweak some of the code one of the things i did was change the ticket to resolve and restarted that app,
+the resolved ticket stayed in that state because all the status information was already stored, 
+Next one was removing methods=["POST"] from the update route, when i did thta i got a 405 error which said Method not allowed, I believe this is because when you remove the methods=[Post] from update route, the route defaults to allowing only get request.
+When i manually type in update_status/999 i get a 404 not found error because it can't find ticket or resource or trying to access, so 
+basically telling me ticket999 isn't avaliable, The get_or_404() function is an easy way of searching for a record or item  in flask, if it can't find it, it quickly returns  a 404 not found response.
+
+redirect() vs render_template(): Use redirect() when you want to send the user to a different page after a change (like editing or deleting something), instead of just showing a new template on the same page.
+
+get_or_404(): This is a quick way to find something (like a ticket), and if it’s not there, it shows a 404 error automatically. Without it, you'd have to manually handle that missing data situation yourself.
+
+GET vs POST: GET is for getting (retrieving) information, and POST is for sending or updating information. So you use POST to push updates to the system.
+
+Security with status updates: If you can update a status without logging in, anyone could do it. That’s a security problem because it lets just anyone change things they shouldn’t.
+
+CRUD" stands for Create, Read, Update, and Delete. I've already set up Create,
+ Read, and Update operations, and the next step is to add Delete. 
+
+Now im working on adding basic authentication/ login protection, So nothing is a security risk.
+
+to do this i needed to install flask-login, change the code in app.py, and a login.html page in the templates folder
+
+Testing Access Without Login: When you try going to /tickets without logging in, it prompts you to log in first.
+
+Logging Out and Trying Again: After you log out by going to /logout, if you then try to access /tickets, you'll be prompted to log in again, confirming that the logout works.
+
+Wrong Password Attempts: If you try logging in with the wrong password, it’ll show an "Invalid username or password" error, and you’ll see that reflected in the terminal as it reloads the login page.
+
+Removing @login_required: If you remove the @login_required decorator from a route, that page won’t require a login anymore. For example, removing it from /logout means you can log out without being logged in, and if you remove it from /tickets, you can view tickets without logging in.
+
+Before I move to phase 4
+1. What is password hashing and why do you never store passwords as plain text?
+ it's a more secure way to store passwords because it transforms them into a unique string of characters. You
+ never store passwords in plain text since that’s a big security risk.
+2.What does a session cookie do? How does Flask know you're still logged in between page loads?
+They store your login info so the site knows you’re still logged in as you move between pages.
+3.What is the difference between authentication and authorization?
+Authentication vs. Authorization: Authentication is confirming who you are; authorization is what you’re 
+allowed to do.
+4.The default password is admin123 hardcoded. Why is that a problem in production?
+Default password: Using something like "admin123" is a problem because it’s easy to guess.
+5.What does @login_required actually do under the hood when you try to access a protected page?
+@login_required: it’s just a way to make sure you have to log in before you can access certain pages.
+

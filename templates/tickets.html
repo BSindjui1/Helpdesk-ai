@@ -1,40 +1,65 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>All Tickets</title>
+    <title>Help Desk - All Tickets</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        .status-open { color: red; font-weight: bold; }
+        .status-progress { color: orange; font-weight: bold; }
+        .status-resolved { color: green; font-weight: bold; }
+        .priority-high { color: red; }
+        .priority-medium { color: orange; }
+        .priority-low { color: green; }
+    </style>
 </head>
 <body>
-    <h1>Help Desk Tickets</h1>
+    <h1>Help Desk Admin Dashboard</h1>
     <a href="/">Submit New Ticket</a>
     <hr>
+    <p>Total tickets: {{ tickets|length }}</p>
 
     {% if tickets %}
-        <table border="1" cellpadding="8">
-            <tr>
-		<th>AI Category</th>
-		<th>AI Priority</th>
-		<th>AI Suggestion</th>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Category</th>
-                <th>Issue</th>
-                <th>Status</th>
-                <th>Submitted</th>
-            </tr>
-            {% for ticket in tickets %}
-            <tr>
-		<td>{{ ticket.ai_category }}</td>
-		<td>{{ ticket.ai_priority }}</td>
-		<td>{{ ticket.ai_suggestion }}</td>
-                <td>{{ ticket.id }}</td>
-                <td>{{ ticket.username }}</td>
-                <td>{{ ticket.category }}</td>
-                <td>{{ ticket.issue }}</td>
-                <td>{{ ticket.status }}</td>
-                <td>{{ ticket.submitted_at.strftime('%Y-%m-%d %H:%M') }}</td>
-            </tr>
-            {% endfor %}
-        </table>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Issue</th>
+            <th>AI Category</th>
+            <th>AI Priority</th>
+            <th>AI Suggestion</th>
+            <th>Status</th>
+            <th>Submitted</th>
+            <th>Update</th>
+        </tr>
+        {% for ticket in tickets %}
+        <tr>
+            <td>{{ ticket.id }}</td>
+            <td>{{ ticket.name }}</td>
+            <td>{{ ticket.category }}</td>
+            <td>{{ ticket.issue }}</td>
+            <td>{{ ticket.ai_category }}</td>
+            <td class="priority-{{ ticket.ai_priority|lower }}">{{ ticket.ai_priority }}</td>
+            <td>{{ ticket.ai_suggestion }}</td>
+            <td class="status-{{ ticket.status|lower|replace(' ', '') }}">{{ ticket.status }}</td>
+            <td>{{ ticket.submitted_at.strftime('%Y-%m-%d %H:%M') }}</td>
+            <td>
+                <form action="/update_status/{{ ticket.id }}" method="POST">
+                    <select name="status">
+                        <option value="Open" {% if ticket.status == 'Open' %}selected{% endif %}>Open</option>
+                        <option value="In Progress" {% if ticket.status == 'In Progress' %}selected{% endif %}>In Progress</option>
+                        <option value="Resolved" {% if ticket.status == 'Resolved' %}selected{% endif %}>Resolved</option>
+                    </select>
+                    <button type="submit">Update</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
     {% else %}
         <p>No tickets yet.</p>
     {% endif %}
