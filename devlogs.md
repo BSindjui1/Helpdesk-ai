@@ -267,3 +267,6 @@ This is the core feature of the whole project working end to end.
 
 **Time spent: 20 minutes**
 
+I then edited tickets.html in templates to add The ai columns and tables for the loop. 
+-When you submit a vague ticket like it's broken the category is made other, priority low, and say that more information needs to be provided.
+-When i submit a ticket in all caps ai handles it just fine

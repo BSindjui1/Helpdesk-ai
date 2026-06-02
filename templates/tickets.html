@@ -11,6 +11,9 @@
     {% if tickets %}
         <table border="1" cellpadding="8">
             <tr>
+		<th>AI Category</th>
+		<th>AI Priority</th>
+		<th>AI Suggestion</th>
                 <th>ID</th>
                 <th>Name</th>
                 <th>Category</th>
@@ -20,6 +23,9 @@
             </tr>
             {% for ticket in tickets %}
             <tr>
+		<td>{{ ticket.ai_category }}</td>
+		<td>{{ ticket.ai_priority }}</td>
+		<td>{{ ticket.ai_suggestion }}</td>
                 <td>{{ ticket.id }}</td>
                 <td>{{ ticket.username }}</td>
                 <td>{{ ticket.category }}</td>
