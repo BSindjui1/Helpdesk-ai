@@ -355,45 +355,37 @@ it sends you back to where you originally wanted to go. That redirect behavior i
 For phase 5 the last things I'll will implement a systemd service a, a dockerfile, and a  deployment script. Right now my app
 is only running when im logged into my pi. A real server runs 24/7
 
+## 2026-06-03
 
-In Phase 5, I focused on making sure my app would run automatically as a service without having to manually start it each time. 
-I achieved this by creating a systemd service file. After editing the service file with my Pi’s username and my API key, I enabled and started the 
-service using systemctl commands. Once I corrected the username and rebooted, the app started successfully. Now it prompts me to log in whenever I 
-access the page, and stopping and starting the service works as expected.
+### Bug Fix: systemd service failing with status=217/USER
 
-Devlog Entry
+**What happened:**
+helpdesk.service kept failing with status=217/USER and
+"Failed to determine user credentials" in the journal logs.
 
-Understanding systemd and Service Behavior
+**How I diagnosed it:**
+Ran sudo journalctl -u helpdesk -n 20 which showed the exact
+error. Then ran sudo cat /etc/systemd/system/helpdesk.service
+and found the User= line still had the wrong username.
 
-systemd Overview: It's basically a tool that helps your app start automatically and restarts it if it crashes.
+**Root cause:**
+Had PakisPI in the service file instead of bsindjui1373.
+Also accidentally exposed my API key in a chat — revoked it
+immediately at console.anthropic.com and generated a new one.
 
-Restart=always: This setting makes sure the service always restarts if it stops for any reason. It's useful but can cause a restart loop if there's a persistent bug.
+**Fix:**
+Updated User=, WorkingDirectory=, and ExecStart= paths in the
+service file to use bsindjui1373. Updated new API key in both
+the service file and ~/.bashrc. Then ran:
+sudo systemctl daemon-reload
+sudo systemctl restart helpdesk
 
-Checking Logs: Using journalctl lets you see what errors are happening when the service keeps restarting, helping you diagnose the issue.
+**What I learned:**
+- journalctl is how you debug systemd services — the status
+  screen cuts off the real error, the journal shows everything
+- The hostname (PakisPI) and the username (bsindjui1373) are
+  two different things — easy to confuse
+- Never paste API keys in public — revoke immediately if exposed
+- Always verify file changes with cat before restarting a service
 
-Key Points:
-
-Daemons: These are just background services that run without direct user input.
-
-After=network.target: This line ensures your app only starts after the network is up, which is important if it needs internet access.
-
-Enable vs. Start: systemctl enable sets the service to run on boot, while systemctl start launches it immediately.
-
-use htop on the Raspberry Pi to monitor and confirm the app’s memory and CPU usage, ensuring stable performance.
-
-A container is a small portable package that stores an entire app along with all it's need, like software , library, and dependencies.
- Making it very easy to move and run anywhere. It's like a portable virtual environment.
-
-A Docker image is like a snapshot or blueprint of your app and its dependencies. A Docker container is a running instance of that 
-image. Containers are like lightweight virtual environments that use fewer resources than virtual machines. They rely on layers for 
-efficient storage and caching, which speeds up builds. Using volumes keeps your data safe if the container restarts, and containers 
-generally take up less space than VMs.
-
-I built my Docker image and learned some important Docker commands. For instance, docker ps shows running containers, and 
-docker ps -a lists all containers. If I need to stop a container, I just use docker stop with the container ID. To see my built images
-, I run docker images, and if I want to check the logs for a container, I use docker logs with the container ID.
-
-Oh, and I also added a deployment script. Basically, a deployment script is what I use to go from “I made a code change” to having it 
-live on the server with just one command. It’s like a manual version of a CI/CD pipeline. Doing it manually helps me understand 
-the whole process better before automating it later on.
-
+**Time spent: X minutes**
