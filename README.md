@@ -192,6 +192,4 @@ A full development log is available in [`devlogs.md`](devlogs.md). It documents 
 
 ---
 
-## Author
 
-Built by a self-directed learner working toward a Tier 1 Help Desk role with a long-term goal in DevOps. Every line of this project was written, broken, debugged, and understood — not copied and pasted.
