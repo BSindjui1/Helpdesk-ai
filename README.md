@@ -8,7 +8,7 @@ A full-stack web application that automates IT support ticket triage using AI. B
 
 ## What It Does
 
-Users submit IT support tickets through a web form. The moment a ticket is submitted, it is automatically sent to the Claude AI API, which analyzes the issue and returns a triage result — category, priority level, and a suggested fix. Admins log in to a protected dashboard to view all tickets and update their status as they are worked.
+Users submit IT support tickets through a web form. The moment a ticket is submitted, it is automatically sent to the Claude AI API, which analyzes the issue and returns a triage result by category, priority level, and a suggested fix. Admins log in to a protected dashboard to view all tickets and update their status as they are worked on.
 
 ---
 
@@ -58,11 +58,11 @@ Users submit IT support tickets through a web form. The moment a ticket is submi
 ## Features
 
 - Submit IT support tickets with name, issue description, and category
-- AI automatically triages every ticket — assigns category, priority (Low/Medium/High), and suggests a fix
+- AI automatically triages every ticket, assigns a category, priority (Low/Medium/High), and suggests a fix
 - Protected admin dashboard — login required to view or manage tickets
 - Update ticket status: Open → In Progress → Resolved
 - Tickets persist across restarts via SQLite database
-- Runs as a Linux systemd service — starts on boot, restarts on crash
+- Runs as a Linux systemd service - starts on boot, restarts on crash
 - Fully containerized with Docker
 - One-command deployment script
 
@@ -149,7 +149,7 @@ Replaced in-memory storage with a persistent SQLite database using SQLAlchemy OR
 ![Ticket Page](screenshots/Ticketpage.png)
 
 ### Phase 3 — AI Integration
-Connected the Claude API to automatically triage every incoming ticket. API key stored securely as an environment variable — never hardcoded in source files. Wrote a standalone test script to validate the API before integrating it into the app. Learned prompt engineering, error handling with try/except, and how external API authentication works.
+Connected the Claude API to automatically triage every incoming ticket. API key stored securely as an environment variable, never hardcoded in source files. Wrote a standalone test script to validate the API before integrating it into the app. Learned prompt engineering, error handling with try/except, and how external API authentication works.
 
 ![Test AI Run](screenshots/Test_ai_run.png)
 ![AI Triage Result](screenshots/phase3-ai-triage-result.png)
@@ -162,7 +162,7 @@ Built a fully protected admin dashboard with login and logout. Implemented passw
 ![Resolved Ticket](screenshots/TicketDashboardResolved.png)
 
 ### Phase 5 — DevOps Layer
-Deployed the app as a Linux systemd service so it runs on boot and restarts automatically if it crashes. Containerized the app with Docker. Wrote a shell deployment script that stops the service, updates dependencies, restarts, and confirms the app came back up — all in one command. Learned how to read live logs with `journalctl`, how Docker layers and caching work, and how manual deployment scripts relate to CI/CD pipelines.
+Deployed the app as a Linux systemd service so it runs on boot and restarts automatically if it crashes. Containerized the app with Docker. Wrote a shell deployment script that stops the service, updates dependencies, restarts, and confirms the app came back up, all in one command. Learned how to read live logs with `journalctl`, how Docker layers and caching work, and how manual deployment scripts relate to CI/CD pipelines.
 
 ![Docker Image Build](screenshots/DockerImage.png)
 ![Docker Running](screenshots/DockerPS.png)
